@@ -6,7 +6,7 @@ if (typeof vu.sop.logApi == "undefined") { vu.sop.logApi = function() {} }
 
 vu.sop.logApi.host = "https://om-presales2.vusecurity.solutions/vu_onboarding_log_rest";
 vu.sop.api.headers = {
-    'authorization': 'd74ac1ee-bd14-4b41-8a67-674849fbc3b5'
+    'authorization': '93c2cca7-8e89-4dff-aef4-f3bcb6930ba9'
   };
 
 //------------------------------------------------------------------------------
