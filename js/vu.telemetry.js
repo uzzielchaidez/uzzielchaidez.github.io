@@ -148,7 +148,7 @@ async function processTelemetryQueue() {
             }
         } catch (error) {
             console.error('Error sending telemetry data:', error);
-            telemetryQueue.unshift(telemetryData);
+            telemetryQueue = [];
             break;
         }
     }

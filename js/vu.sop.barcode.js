@@ -157,7 +157,7 @@ vu.sop.barcode.loop = async function() {
         }
 
         // Mandar el raw
-        //resultParsed["raw"] = resultByType;
+        resultParsed["raw"] = resultByType;
 
         console.log([mainData, resultParsed])
         vu.sop.barcode.ui.resolve([mainData, resultParsed]);

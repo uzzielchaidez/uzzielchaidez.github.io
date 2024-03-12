@@ -201,6 +201,17 @@ vu.sop.ui.alert = async function(msg) {
     return promise
 };
 
+vu.sop.ui.alertAndRefreshResolve = null
+vu.sop.ui.alertAndRefresh = async function(msg) {
+    let promise = new Promise(function(resolve, reject) {
+        vu.sop.ui.show('vu.sop.ui.alert')
+        vu.sop.ui.alertAndRefreshResolve = resolve
+        let divContainer = vu.sop.ui.alertDraw(msg, vu.sop.ui.alertCloseAndRefresh);
+        document.getElementById("vu.sop.ui.alert").appendChild(divContainer);
+    });
+    return promise
+};
+
 vu.sop.ui.alertNoButton = async function(msg) {
     let promise = new Promise(function(resolve, reject) {
         vu.sop.ui.show('vu.sop.ui.alert')
@@ -215,6 +226,10 @@ vu.sop.ui.alertClose = function() {
     vu.sop.ui.hide('vu.sop.ui.alert')
     document.getElementById("vu.sop.ui.alert").innerHTML = "";
     vu.sop.ui.alertResolve(true)
+}
+
+vu.sop.ui.alertCloseAndRefresh = function() {
+        window.location.reload(false);
 }
 
 vu.sop.ui.disabled =  async function(id){
@@ -573,8 +588,12 @@ vu.sop.ui.user.doPreSetUser  = async function(userNameValue) {
             vu.sop.ui.user.start.resolve(true)
         } else {
             console.log('newOperation', 'error', response);
-            alert =  vu.sop.ui.alert(vu.sop.msg.addBackDocumentComunicationError);
-            vu.sop.ui.hide("vu.sop.ui.alertButton")
+            let alertElement = document.getElementById("vu.sop.ui.alert");
+            if (alertElement) {
+                alertElement.innerHTML = "";
+            }
+            alert =  vu.sop.ui.alertAndRefresh(vu.sop.msg.addBackDocumentComunicationError);
+            //vu.sop.ui.hide("vu.sop.ui.alertButton")
             await alert
         }
     }else{

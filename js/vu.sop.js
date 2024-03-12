@@ -1,6 +1,6 @@
 /*
 *
-*    SDK version Version: 1.0.34
+*    SDK version Version: 1.0.35
 *    © 2024 VU Security
 */
 
@@ -1243,7 +1243,7 @@ vu.sop.steps.takePictureDocumentBack = async function() {
                                     if (barcodeResponse.code != 920) {
                                         throw new Error('deviceNotSupported')
                                     }
-                                } else {
+                                } else if(VUId !== 'VU-COL-ID-02' ){
                                     if(vu.sop.enableTelemetry){
                                         await vu.telemetry.addEvent("DocumentActivityProcess", "end",
                                             {"captureResponseNumber": vu.telemetry.captureResponseCode.BACK.BARCODE_NOT_FOUND});

@@ -201,6 +201,7 @@ button {
     #vu\.sop {
         margin: auto;
         width: 390px;
+        height: 487px;
         background-color: black;
         overflow: hidden
     }

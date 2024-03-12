@@ -482,7 +482,8 @@ vu.face.ui.gestures.challengeDoLoop = async function() {
         vu.face.ui.gestures.pictures.push(await vu.camera.takePicture());
         vu.face.ui.gestures.challengeNum = vu.face.ui.gestures.challengeNum + 1;
         vu.face.ui.gestures.challengeValidaXTimesCounter = 0
-        await vu.telemetry.addEvent("SelfieActivityProcess" , "challengeInfo" , {"challenge" : challenge, "debugEvaluation" : vu.sop.ui.debug.finalEval[vu.sop.ui.debug.finalEval.length - 1]});
+        if(vu.sop.enableTelemetry){
+        await vu.telemetry.addEvent("SelfieActivityProcess" , "challengeInfo" , {"challenge" : challenge, "debugEvaluation" : vu.sop.ui.debug.finalEval[vu.sop.ui.debug.finalEval.length - 1]});}
         vu.sop.ui.debug.finalEval = [];
         vu.face.ui.gestures.results = [];
     }

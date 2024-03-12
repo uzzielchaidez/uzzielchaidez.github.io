@@ -1,6 +1,6 @@
 /*
 *
-*    SDK version Version: 1.0.34
+*    SDK version Version: 1.0.35
 *    © 2024 VU Security
 */
 
