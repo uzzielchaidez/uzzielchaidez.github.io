@@ -110,16 +110,6 @@ vu.camera.isVerticalVideo = function() {
     }
 };
 
-vu.camera.hasFocusControl = function() {
-    if ("focusDistance" in vu.camera.stream.getVideoTracks()[0].getCapabilities()) {
-        // console.log("Focus Control")
-        return true
-    } else {
-        // console.log("NO Focus Control")
-        return false
-    }
-}
-
 /**
  * Return a array of values (example, min = 1, max = 5, returns = [1,2,3,4,5])
  *
@@ -189,7 +179,7 @@ vu.camera.setMaxResolution = async function () {
             vu.camera.devices = await navigator.mediaDevices.enumerateDevices();
             console.log(vu.camera.devices);
             let count = 0;
-            vu.camera.devices.forEach(mediaDevice => {
+              vu.camera.devices.forEach(mediaDevice => {
                 count++;
                 if (mediaDevice.kind === 'videoinput') {
                     vu.camera.videoinput.push(mediaDevice);
@@ -205,7 +195,7 @@ vu.camera.setMaxResolution = async function () {
                             }
                         }
                     }
-                } else {
+                }else{
                     Object.assign(constraints.video, {facingMode: vu.camera.config.orientation});
                 }
               });

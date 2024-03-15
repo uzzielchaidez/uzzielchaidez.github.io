@@ -8,7 +8,7 @@ if (typeof vu.sop.face.model == "undefined") { vu.sop.face.model = function() {}
 
 if (typeof vu.sop.face.model.directionsAndGestures == "undefined") { vu.sop.face.model.directionsAndGestures = function() {} }
 
-vu.sop.face.model.directionsAndGestures.modelURL = ''
+vu.sop.face.model.directionsAndGestures.modelURL = 'onboarding/js/models/face-directions-gestures/model.json'
 vu.sop.face.model.directionsAndGestures.modelHeight = 224
 vu.sop.face.model.directionsAndGestures.modelWidth = 224
 vu.sop.face.model.directionsAndGestures.labels = ['closed_eyes', 'face_looking_down', 'face_looking_left', 'face_looking_right', 'face_looking_up', 'face_neutral', 'open_mouth', 'smile']
@@ -18,11 +18,7 @@ vu.sop.face.model.directionsAndGestures.labels = ['closed_eyes', 'face_looking_d
 vu.sop.face.model.directionsAndGestures.model;
 
 
-vu.sop.face.model.directionsAndGestures.loadModel = async function(basePath) {
-    console.log(basePath)
-    vu.sop.face.model.directionsAndGestures.modelURL = basePath + '/js/models/face-directions-gestures/model.json';
-    console.log(vu.sop.face.model.directionsAndGestures.modelURL);
-
+vu.sop.face.model.directionsAndGestures.loadModel = async function() {
     tf.ENV.set('DEBUG', false);
     tf.enableProdMode();
 

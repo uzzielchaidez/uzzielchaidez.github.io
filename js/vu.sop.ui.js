@@ -201,17 +201,6 @@ vu.sop.ui.alert = async function(msg) {
     return promise
 };
 
-vu.sop.ui.alertAndRefreshResolve = null
-vu.sop.ui.alertAndRefresh = async function(msg) {
-    let promise = new Promise(function(resolve, reject) {
-        vu.sop.ui.show('vu.sop.ui.alert')
-        vu.sop.ui.alertAndRefreshResolve = resolve
-        let divContainer = vu.sop.ui.alertDraw(msg, vu.sop.ui.alertCloseAndRefresh);
-        document.getElementById("vu.sop.ui.alert").appendChild(divContainer);
-    });
-    return promise
-};
-
 vu.sop.ui.alertNoButton = async function(msg) {
     let promise = new Promise(function(resolve, reject) {
         vu.sop.ui.show('vu.sop.ui.alert')
@@ -226,10 +215,6 @@ vu.sop.ui.alertClose = function() {
     vu.sop.ui.hide('vu.sop.ui.alert')
     document.getElementById("vu.sop.ui.alert").innerHTML = "";
     vu.sop.ui.alertResolve(true)
-}
-
-vu.sop.ui.alertCloseAndRefresh = function() {
-        window.location.reload(false);
 }
 
 vu.sop.ui.disabled =  async function(id){
@@ -524,18 +509,13 @@ vu.sop.ui.user.hide = async function() {
 };
 
 vu.sop.ui.user.do  = async function() {
-    vu.sop.audio.reproducir();
+    //vu.sop.audio.reproducir();
     await vu.sop.ui.disabled('vu.sop.ui.userNameSendBtn');
     await vu.sop.ui.showWhiteLoading();
     let userName = document.getElementById("vu.sop.ui.userName").value;
     vu.sop.userNameValue = userName;
     try {
-
-        if(vu.sop.enableTelemetry){
-            await vu.telemetry.initTraceId();
-        }
-
-        response = await vu.sop.api.newOperation(userName, vu.sop.browserInfo);
+        response = await vu.sop.api.newOperation(userName);
     } catch (error) {
         response = {code: 0, message: vu.sop.msg.userComunicationError}
         //throw new Error(error)
@@ -565,41 +545,27 @@ vu.sop.ui.user.doPreSetUser  = async function(userNameValue) {
         vu.sop.ui.user.start.reject = reject
     });
 
-    vu.sop.audio.reproducir();
+    //vu.sop.audio.reproducir();
     await vu.sop.ui.showWhiteLoading();
-    if(!vu.face.auth.loginFlag){
-        try {
-            if(vu.sop.enableTelemetry){
-                await vu.telemetry.initTraceId();
-            }
-            response = await vu.sop.api.newOperation(userNameValue, vu.sop.browserInfo);
-        } catch (error) {
-            response = {code: 0, message: vu.sop.msg.userComunicationError}
-            //throw new Error(error)
-        }
-
-        await vu.sop.ui.hideWhiteLoading();
-        if (response.code === 901) {
-            await vu.sop.ui.enable('vu.sop.ui.userNameSendBtn')
-            vu.sop.operationIdValue = response.operationId;
-            vu.sop.operationGuidValue = response.operationGuid;
-            await vu.sop.ui.user.hide();
-            await vu.sop.ui.showVideo();
-            vu.sop.ui.user.start.resolve(true)
-        } else {
-            console.log('newOperation', 'error', response);
-            let alertElement = document.getElementById("vu.sop.ui.alert");
-            if (alertElement) {
-                alertElement.innerHTML = "";
-            }
-            alert =  vu.sop.ui.alertAndRefresh(vu.sop.msg.addBackDocumentComunicationError);
-            //vu.sop.ui.hide("vu.sop.ui.alertButton")
-            await alert
-        }
-    }else{
+    try {
+        response = await vu.sop.api.newOperation(userNameValue);
+    } catch (error) {
+        response = {code: 0, message: vu.sop.msg.userComunicationError}
+        //throw new Error(error)
+    }
+    await vu.sop.ui.hideWhiteLoading();
+    if (response.code === 901) {
+        await vu.sop.ui.enable('vu.sop.ui.userNameSendBtn')
+        vu.sop.operationIdValue = response.operationId;
+        vu.sop.operationGuidValue = response.operationGuid;
         await vu.sop.ui.user.hide();
         await vu.sop.ui.showVideo();
         vu.sop.ui.user.start.resolve(true)
+    } else {
+        console.log('newOperation', 'error', response);
+        alert =  vu.sop.ui.alert(vu.sop.msg.addBackDocumentComunicationError);
+        vu.sop.ui.hide("vu.sop.ui.alertButton")
+        await alert
     }
 };
 
@@ -623,7 +589,6 @@ vu.sop.ui.debug.debugElementCenter = false
 vu.sop.ui.debug.info = []
 vu.sop.ui.debug.perf = []
 vu.sop.ui.debug.eval = []
-vu.sop.ui.debug.finalEval = []
 
 vu.sop.ui.boxCenterPoint = document.getElementById('vu.sop.ui.debugElementCenter')
 vu.sop.ui.videoContainer = document.getElementById('vu.sop.ui.videoContainer')
@@ -638,9 +603,6 @@ vu.sop.ui.drawVideoCenter = function() {
 }
 
 vu.sop.ui.cleanResults = function () {
-    if(vu.sop.enableTelemetry){
-        vu.sop.ui.debug.finalEval.push(vu.sop.ui.debug.eval[0]);
-    }
     vu.sop.ui.debug.info = []
     vu.sop.ui.debug.eval = []
     vu.sop.ui.debug.perf = []

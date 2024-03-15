@@ -43,9 +43,9 @@ vu.face.stop = function() {
     vu.face.doLoop = false
 }
 
-vu.face.load = async function(videoElement, basePath) {
-    faceDetection = vu.sop.face.objectDetectionAndRotation.loadModel(basePath)
-    directionAndGesture = vu.sop.face.model.directionsAndGestures.loadModel(basePath)
+vu.face.load = async function(videoElement) {
+    faceDetection = vu.sop.face.objectDetectionAndRotation.loadModel()
+    directionAndGesture = vu.sop.face.model.directionsAndGestures.loadModel()
     vu.face.canvas = document.createElement('canvas');
     vu.face.canvasContext = vu.face.canvas.getContext("2d");
     vu.face.canvasInference = document.createElement('canvas');
@@ -94,7 +94,7 @@ vu.face.getRotationAndGestures = async function(canvas) {
         result.push('smileRight')
         result.push('smileLeft')
     }
-    if (data['closed_eyes'] > vu.face.gesturesConf[1][1]) {
+    if (data['bothEyesClosed'] > vu.face.gesturesConf[1][1]) {
         result.push('eyeRightClose')
         result.push('eyeLeftClose')
     }
@@ -217,7 +217,7 @@ vu.face.getData = async function(){
                     faceCenterHorizontalAlert = true
                 }
 
-                if (vu.sop.ui.debug.enable || vu.sop.enableTelemetry) {
+                if (vu.sop.ui.debug.enable) {
                     vu.sop.ui.debug.eval.push(['Face confidence', faceConfidence +"%", 'white'])
 
                     if (isBright[0]) {color = '#1DC600'} else { color = 'red'}

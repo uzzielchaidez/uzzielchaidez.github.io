@@ -1,9 +1,3 @@
-/*
-*
-*    SDK version Version: 1.0.35
-*    © 2024 VU Security
-*/
-
 if (typeof vu == "undefined") { vu = function() {} }
 
 if (typeof vu.face == "undefined") { vu.face = function() {} }
@@ -24,11 +18,9 @@ vu.face.auth.useHighResolutionSettingsInPCCamera = false
 vu.face.auth.useHighResolutionSettingsInMobileCamera = false
 vu.face.auth.registrationFlow = false
 vu.face.auth.enableSelfieList = false
-vu.face.auth.loginFlag = false;
-vu.face.auth.basePath = '';
+
 
 vu.face.auth.load = async function(basePath) {
-    vu.face.auth.basePath = basePath;
     try {
         let htmlLoad = vu.face.auth.loadHtml(basePath + '/html/face.html');
         let webRTCadapter = vu.face.auth.loadJs(basePath + '/js/libs/webrtc/adapter-latest.js');
@@ -238,7 +230,7 @@ vu.face.auth.videoResizeObserver = new ResizeObserver(entries => {
 
 
 vu.face.auth.userDo  = async function() {
-    vu.sop.audio.reproducir();
+    //vu.sop.audio.reproducir();
     await vu.sop.ui.disabled('vu.sop.ui.userNameSendBtn');
     await vu.sop.ui.showWhiteLoading();
     let userName = document.getElementById("vu.sop.ui.userName").value;
@@ -249,7 +241,7 @@ vu.face.auth.userDo  = async function() {
 vu.face.auth.faceModelLoad = false;
 vu.face.auth.start = async function() {
     while (true) {
-        try {
+        //try {
             await vu.sop.ui.showWhiteLoading();
             vu.face.auth.videoResizeObserver.observe(document.getElementById('vu.sop.ui.videoContainer'));
 
@@ -271,17 +263,17 @@ vu.face.auth.start = async function() {
             vu.sop.ui.flipVideoHorizontal(vu.camera.video)
             console.log('Warming Up Start')
             if ( vu.face.auth.warmUpFaceModelAsync ) {
-                vu.face.auth.faceModelLoad = vu.face.load(vu.camera.video, vu.face.auth.basePath);
+                vu.face.auth.faceModelLoad = vu.face.load(vu.camera.video);
             } else {
-                await vu.face.load(vu.camera.video, vu.face.auth.basePath);
+                await vu.face.load(vu.camera.video);
             }
             break
-        } catch (e) {
+        /*} catch (e) {
             await vu.sop.ui.hideWhiteLoading();
             console.log(e)
             await vu.error.showError(new vu.error.CameraError(e.message));
             
-        }
+        }*/
     }
 
 
@@ -294,7 +286,6 @@ vu.face.auth.start = async function() {
                 // Espera a que se resuelva la pantalla del usuario
                 await vu.sop.ui.user.start()
             } else {
-                vu.face.auth.loginFlag = true;
                 await vu.sop.ui.user.doPreSetUser(vu.face.auth.userNameValue)
             }
 
@@ -318,7 +309,7 @@ vu.face.auth.start = async function() {
 
             await vu.sop.ui.showVideo()
             if (vu.face.useGestures) {
-                await vu.face.ui.gestures.start(vu.face.auth.basePath);
+                await vu.face.ui.gestures.start();
                 pictures = await vu.face.ui.gestures.challengeStart();
             } else {
                 await vu.face.ui.start();

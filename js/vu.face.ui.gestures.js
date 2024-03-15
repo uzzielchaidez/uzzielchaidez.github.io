@@ -107,7 +107,7 @@ vu.face.ui.gestures.videoResizeObserver = new ResizeObserver(entries => {
 });
 
 
-vu.face.ui.gestures.start = function(basePath) {
+vu.face.ui.gestures.start = function() {
     vu.face.ui.gestures.circle = document.getElementById("vu.face.ui.gestures.circle");
     vu.sop.ui.show("vu.face.ui.gestures.circle");
     
@@ -129,7 +129,7 @@ vu.face.ui.gestures.start = function(basePath) {
     vu.face.ui.gestures.loop = true;
     vu.face.ui.gestures.genChallenges();
     vu.face.start();
-    vu.face.ui.gestures.doLoop(basePath);
+    vu.face.ui.gestures.doLoop();
     return true
 };
 
@@ -150,11 +150,11 @@ vu.face.ui.gestures.resultsValidateTimeFrame = 4000;//2500;
 vu.face.ui.gestures.resultsFeedbackPercentual = 50; // Si el X% de los resultados en el tiempo de resultsFeedbackTimeFrame es positivo, se considera que se tiene que mostrar el feedback
 vu.face.ui.gestures.resultsValidatePercentual = 50; // Si el X% de los resultados en el tiempo de resultsValidateTimeFrame es positivo, se considera que se tiene que mostrar el feedback
 
-vu.face.ui.gestures.doLoop = function(basePath) {
+vu.face.ui.gestures.doLoop = function() {
     data = vu.face.getData();
 
     if (typeof JEEFACETRANSFERAPI.is_detected == "undefined") {
-        vu.face.load(vu.camera.video, basePath).then(
+        vu.face.load(vu.camera.video).then(
             challenge = vu.face.ui.gestures.challenges[vu.face.ui.gestures.challengeNum]
         )
     } else {
@@ -260,7 +260,7 @@ vu.face.ui.gestures.doLoop = function(basePath) {
 
     if (vu.face.ui.gestures.loop == true) {
         setTimeout(function () {
-            promise = vu.face.ui.gestures.doLoop(basePath)
+            promise = vu.face.ui.gestures.doLoop()
         }, 100);
     }
 };
@@ -417,8 +417,6 @@ vu.face.ui.gestures.challengeDoLoop = async function() {
         vu.face.ui.gestures.pictures.push(await vu.camera.takePicture());
         vu.face.ui.gestures.challengeNum = vu.face.ui.gestures.challengeNum + 1;
         vu.face.ui.gestures.challengeValidaXTimesCounter = 0
-        if(vu.sop.enableTelemetry){
-        await vu.telemetry.addEvent("SelfieActivityProcess" , "challengeInfo" , {"challenge" : challenge, "debugEvaluation" : {}});}
         vu.face.ui.gestures.results = [];
     }
 

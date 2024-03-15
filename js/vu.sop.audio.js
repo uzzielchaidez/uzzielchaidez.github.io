@@ -8,22 +8,10 @@ if (typeof vu.sop.audio == "undefined") {
 }
 
 vu.sop.audio.snd = new Audio("data:audio/mp3;base64,"+vu.sop.audio.userError);
-
-const audioQueue = [];
-
 vu.sop.audio.play = function (base64) {
    if (vu.sop.audio.enabled) {
-       const audio = document.getElementById(base64);
-       audioQueue.push(audio)
-       if (audioQueue.length > 1 ) {
-           const previousAudio = audioQueue[audioQueue.length - 2];
-           if(previousAudio.id !== "vu.sop.audio.audioBeep"){
-            console.log(`Pausing audio : ${previousAudio}`);
-            previousAudio.pause();
-            }
-           }
-       audio.play();
-       console.log(`Playing audio : ${document.getElementById(base64).play()}`);
+       document.getElementById(base64).play();
+       console.log(document.getElementById(base64).play());
    }
 }
 

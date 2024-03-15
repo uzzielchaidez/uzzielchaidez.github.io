@@ -18,28 +18,23 @@
 	    <div id="vu.sop.ui" >
 			<div id="vu.sop.ui.videoContainer" class="vu.sop.ui.videoContainer" style="display: block; height: 480px; width: 640px; overflow: hidden; transform: translate(-50%, -0%);">
 				<video id="vu.sop.ui.video" autoplay muted></video>
-
-				<div id="vu.sop.barcode.ui.overlay" class="vu.sop.barcode.ui.overlay"></div>
 			</div>
 
-			<div id="vu.sop.ui.alert" class="vu.sop.ui.fullSizeDiv"></div>
-
-			<!-- Bottom Text -->
-			<div id="vu.sop.ui.bottomText"></div>
-
-			<!-- Bottom Text Alert-->
-			<div style="text-align: center;">
-				<div id="vu.sop.ui.bottomTextAlert"></div>
+			<div class="vu.sop.ui.fullSizeDiv" style="display: block; ">
+				<div class="vu.sop.ui.innerVerticalAlign">
+					<div style="position: absolute; height: 2px; width: 100%; background-color: red; top: 50%;"></div>
+				</div>
 			</div>
 		</div>
 
+
     	<script src="../js/libs/webrtc/adapter-latest.js"></script>
-		<script src="../js/vu.sop.js"></script>
-		<script src="../js/vu.sop.ui.js"></script>
-		<script src="../js/vu.sop.msg.es.js"></script>
-		<script src="../js/vu.sop.documentCodes.js"></script>
-        <script src="../js/vu.sop.barcode.js"></script>
         <script src="../js/vu.camera.js"></script>
+
+		<script src="../js/libs/barcode/BigInteger.min.js"></script>
+		<script src="../js/libs/barcode/zxing-pdf417.js"></script>
+		<script src="../js/vu.sop.barcode.scanPdf417.js"></script>
+
 
 	</body>
 	<script>
@@ -47,24 +42,19 @@
 			prepare the image and canvas context
 		*/
 
-		vu.sop.operationIdValue = 1;
-		vu.sop.operationGuidValue = 1;
-		vu.sop.documentId = 1;
-		vu.sop.userNameValue = "dvazquez@test.com";
-
 		var camera;
         sopStart = async function() {
+
 			vu.camera.config.orientation = 'user';
-			vu.camera.config.orientation = 'environment';
+			//vu.camera.config.orientation = 'environment';
 			await vu.camera.start("vu.sop.ui.video");
-			await vu.sop.barcode.load('/static/onboarding/');
+			await vu.sop.barcode.scanPdf417.start()
+
         }
 
         sopStart().then(
         		function (result) {
-					console.log("Sop Started")
         			console.log(result)
-					vu.sop.barcode.ui.start()
         		})
 	</script>
 </html>

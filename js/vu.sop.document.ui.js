@@ -312,11 +312,6 @@ vu.sop.document.ui.loop = async function(promise) {
                 }
                 // Is blurry
                 if (isBlurry[0] == true){
-
-                    if(vu.sop.enableTelemetry){
-                        await vu.telemetry.addEvent("DocumentActivityProcess", "end", {"isBlurry" : true} );
-                    }
-
                     vu.sop.ui.showBottomTextAlert(vu.sop.msg.blurryDocument)
                     imageQualityIsOK = false
                 }

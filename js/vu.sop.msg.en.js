@@ -33,7 +33,7 @@ vu.sop.msg.cameraAutoplayProtection = "Anti-Autoplay Video Anti-Autoplay prevent
 vu.sop.msg.cameraLowResolution = "Camera resolution is too low. Please, try on a different device";
 vu.sop.msg.cameraError = "A undefined error occurred when accessing the camera, contact the administrator";
 
-vu.sop.msg.userError = "An error occurred at the beginning of the register, please try again";
+vu.sop.msg.userError = "An error occurred at the beginning of the resgiter, please try again";
 vu.sop.msg.userComunicationError = "Communication with the server couldn't be established, please try again";
 vu.sop.msg.userPleaseEnableAudio = "Please turn the sound off";
 
@@ -61,6 +61,7 @@ vu.sop.msg.addBackApiErrorFrontAlreadyExist = "An error occurred with the image,
 vu.sop.msg.smallDocumentImg = "Image too small, please try with other image"
 vu.sop.msg.badImageFormat = "Image format not supported, please use PNG or JPG"
 
+
 vu.sop.msg.facePoint = "Follow the point";
 vu.sop.msg.faceComunicationErrorRegister = "An error occurred while communicating with the API, please try again";
 vu.sop.msg.faceComunicationErrorEndOperation = "An error occurred while communicating with the API, please try again"
@@ -76,21 +77,14 @@ vu.sop.msg.faceGesturesEyeClose = "Close your eyes until you hear the signal";
 vu.sop.msg.faceGesturesEyeRightClose = "Close your right eye until the circle is green";
 vu.sop.msg.faceGesturesEyeLeftClose = "Close your left eye until the circle is green";
 vu.sop.msg.faceGesturesLookLeft = "Look slightly to the right until the circle is green";
-vu.sop.msg.faceGesturesLookRight = "Look slightly to the left until the circle is green";
+vu.sop.msg.faceGesturesLookRight = "Look slightly to the left until the cricle is green";
 vu.sop.msg.faceGesturesLookUp = "Look slightly up until the circle is green";
-vu.sop.msg.faceGesturesLookDown = "Look slightly down until the circle is green";
+vu.sop.msg.faceGesturesLookDown = "Look slightly down until the cricle is green";
 vu.sop.msg.faceGesturesNone = "Look to the front with a neutral face until the circle is green";
 
 vu.sop.msg.endOpApiBadScore = "Didn't pass the identity validations, please try again";
-vu.sop.msg.endOpApiDocumentDataError = "Wrong document information, please try again";
+vu.sop.msg.endOpApiDocumentDataError = "Wrong document information, please trry again";
 vu.sop.msg.endOpApiDocumentBackFrontError = "The information of front and back of the ID doesn't match, please try again";
 vu.sop.msg.endOpApiDocumentBarcodeDoNotExist = "Barcode wasn't read, please again";
 vu.sop.msg.endOpApiDocumentExpired = "Expired document, please try again";
 vu.sop.msg.endOpApiPersonDataFail = "Person's identity wasn't analyzed, please try again";
-
-vu.sop.msg.readBarcode = "Locate the barcode in the central area";
-vu.sop.msg.cantReadBarcode = "If you can't read it, try another device";
-vu.sop.msg.readBarcodeTutorial = "On the next screen you will be asked to read the barcode of your document";
-vu.sop.msg.cameraWithoutFocusControl = "The camera in this device doesn't allow focus control. We suggest using a different device.";
-
-

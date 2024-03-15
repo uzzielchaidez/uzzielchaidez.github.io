@@ -34,7 +34,8 @@
         </div>
 
 
-        <!-- USER -->
+        <!-- USER required email-->
+		<!--
         <div id="vu.sop.ui.userContainer" class="vu.sop.ui.fullSizeDiv">
             <div class="vu.sop.ui.innerVerticalAlign" style="margin-top: -2em;">
                 <form id="vu.sop.ui.userForm" action="#" onsubmit="let send = vu.face.auth.userDo(); return false;">
@@ -46,6 +47,30 @@
                            placeholder="Correo de usuario"
                            aria-describedby="basic-addon2"
                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,6}$">
+                    <div class="vu.sop.input-group-append">
+                        <button id='vu.sop.ui.userNameSendBtn' class="vu.sop.btn vu.sop.btn-outline-secondary" type="submit">
+                            Iniciar
+                        </button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+		-->
+
+        <!-- USER required user-->
+		
+		<div id="vu.sop.ui.userContainer" class="vu.sop.ui.fullSizeDiv">
+            <div class="vu.sop.ui.innerVerticalAlign" style="margin-top: -2em;">
+                <form id="vu.sop.ui.userForm" action="#" onsubmit="let send = vu.face.auth.userDo(); return false;">
+                <div class="vu.sop.input-group vu.sop.mb-3">
+                    <input minlength="5"
+                           id='vu.sop.ui.userName'
+                           type="text"
+                           class="vu.sop.form-control"
+                           placeholder="Usuario"
+                           aria-describedby="basic-addon2"
+                           pattern="[a-z0-9._%+-]">
                     <div class="vu.sop.input-group-append">
                         <button id='vu.sop.ui.userNameSendBtn' class="vu.sop.btn vu.sop.btn-outline-secondary" type="submit">
                             Iniciar

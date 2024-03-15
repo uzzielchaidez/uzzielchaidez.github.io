@@ -201,7 +201,6 @@ button {
     #vu\.sop {
         margin: auto;
         width: 390px;
-        height: 487px;
         background-color: black;
         overflow: hidden
     }
@@ -577,20 +576,4 @@ button {
         height: auto;
         width: auto;
     }
-}
-
-/* -----------------------------*/
-/* Resoponsive                  */
-/* -----------------------------*/
-
-
-.vu\.sop\.barcode\.ui\.overlay {
-    position: absolute;
-    top: 5%;
-    left: 0px;
-    background-repeat:no-repeat;
-    background-position: 50% 50%;
-    height: 90%;
-    width: 100%;
-    display: None;
 }

@@ -19,7 +19,7 @@ if (typeof vu.face.ui.gestures == "undefined") { vu.face.ui.gestures = function(
 vu.face.ui.gestures.loop = false;
 // 'eyeClose', 'smile'
 //vu.face.ui.gestures.allChallenges = ['smile', 'lookLeft', 'lookRight', 'lookDown', 'lookUp']
-vu.face.ui.gestures.allChallenges = ['smile', 'lookLeft', 'lookRight', 'eyeClose']
+vu.face.ui.gestures.allChallenges = ['smile', 'lookLeft', 'lookRight']
 // none
 vu.face.gestures.permisiveNeutralChallenge = false
 
@@ -104,7 +104,7 @@ vu.face.ui.gestures.videoResizeObserver = new ResizeObserver(entries => {
 });
 
 
-vu.face.ui.gestures.start = function(basePath) {
+vu.face.ui.gestures.start = function() {
     vu.face.ui.gestures.circle = document.getElementById("vu.face.ui.gestures.circle");
     vu.sop.ui.show("vu.face.ui.gestures.circle");
     
@@ -132,7 +132,7 @@ vu.face.ui.gestures.start = function(basePath) {
     vu.face.ui.gestures.loop = true;
     vu.face.ui.gestures.genChallenges();
     vu.face.start();
-    vu.face.ui.gestures.doLoop(basePath);
+    vu.face.ui.gestures.doLoop();
     return true
 };
 
@@ -154,11 +154,11 @@ vu.face.ui.gestures.resultsValidateTimeFrame = 4000;    // El periodo de tiempo 
 vu.face.ui.gestures.resultsValidatePercentual = 30;     // Si el X% de los resultados en el tiempo de resultsValidateTimeFrame es positivo, se considera que se tiene que mostrar el feedback
 
 
-vu.face.ui.gestures.doLoop = function(basePath) {
+vu.face.ui.gestures.doLoop = function() {
     var start = new Date();
     vu.face.getData().then(function (data) {
         if (data[0] == false) {
-            vu.face.load(vu.camera.video, basePath).then(
+            vu.face.load(vu.camera.video).then(
                 challenge = vu.face.ui.gestures.challenges[vu.face.ui.gestures.challengeNum]
             )
         } else {
@@ -212,7 +212,6 @@ vu.face.ui.gestures.doLoop = function(basePath) {
                 else if (challenge === 'none') {
                     vu.face.ui.gestures.picturesTags.push("SN");
                     vu.sop.audio.play('vu.sop.audio.faceGesturesNone');
-                    new Promise(resolve => setTimeout(resolve, 150));
                     vu.sop.ui.showBottomText(vu.sop.msg.faceGesturesNone)
                 }
                 else { vu.sop.ui.showBottomText("") }
@@ -309,7 +308,7 @@ vu.face.ui.gestures.doLoop = function(basePath) {
 
         if (vu.face.ui.gestures.loop == true) {
             setTimeout(function () {
-                promise = vu.face.ui.gestures.doLoop(basePath)
+                promise = vu.face.ui.gestures.doLoop()
             }, 10);
         }
     });
@@ -482,9 +481,6 @@ vu.face.ui.gestures.challengeDoLoop = async function() {
         vu.face.ui.gestures.pictures.push(await vu.camera.takePicture());
         vu.face.ui.gestures.challengeNum = vu.face.ui.gestures.challengeNum + 1;
         vu.face.ui.gestures.challengeValidaXTimesCounter = 0
-        if(vu.sop.enableTelemetry){
-        await vu.telemetry.addEvent("SelfieActivityProcess" , "challengeInfo" , {"challenge" : challenge, "debugEvaluation" : vu.sop.ui.debug.finalEval[vu.sop.ui.debug.finalEval.length - 1]});}
-        vu.sop.ui.debug.finalEval = [];
         vu.face.ui.gestures.results = [];
     }
 

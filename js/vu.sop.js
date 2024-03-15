@@ -1,10 +1,3 @@
-/*
-*
-*    SDK version Version: 1.0.35
-*    © 2024 VU Security
-*/
-
-
 if (typeof vu == "undefined") { vu = function() {} }
 
 if (typeof vu.sop == "undefined") { vu.sop = function() {} }
@@ -13,19 +6,15 @@ if (typeof vu.face == "undefined") { vu.face = function() {} }
 
 if (typeof vu.sop.audio == "undefined") { vu.sop.audio = function() {} }
 
-const sonidos = document.getElementById('sonidos');
+ const sonidos = document.getElementById('sonidos');
+vu.sop.disableBiometric = false;
 
-// Operation/Environment INFO
 vu.sop.operationIdValue = null;
 vu.sop.operationGuidValue = null;
-vu.sop.documentId = null;       // detectedCountryId
 vu.sop.userNameValue = null;
-vu.sop.basePath = '';
-
-// Options
-vu.sop.disableBiometric = false;
 vu.sop.lang = 'es';
 vu.sop.flipDocumentCamera = 'auto';
+vu.sop.barcodeOptional = true;
 vu.sop.warmUpDocModelAsync = false;
 vu.sop.faceOrientationModelWeights = 'BEST';        // VERYLIGHT LIGHT NORMAL BEST
 vu.sop.recordProcess = false;
@@ -36,37 +25,25 @@ vu.sop.useTheSameCameraInDocAndFaceInMobile = false
 vu.sop.setCameraOrientationInPC = 'auto'        // auto ( environment for document, user for selfie), environment, user
 vu.sop.setCameraOrientationInMobile = 'auto'    // auto ( environment for document, user for selfie), environment, user
 
-vu.sop.checkCameraFocusCapabilitiesInPC = true          // Muestra un warning si no hay control de foco en PC
-vu.sop.checktCameraFocusCapabilitiesInMobile = false    // Muestra un warning si no hay control de foco en Mobile
-
 vu.sop.setDocumentBackgroudStyleMirror = false
 
 vu.sop.setHEICFileFormatSupport = true
 vu.sop.enableSelfieList = false
-vu.sop.browserInfo = null;
-
-vu.sop.barcodeOptional = true;              // Continue if cant read the barcode
-vu.sop.readBarcodeClientSide = true;
-
-vu.sop.enableTelemetry = true;
 
 //------------------------------------------------------------------------------------------------------
 
 vu.sop.preCacheFaceModelPromise = false;
 vu.sop.HEICFileFormatSupportLibLoad = false;
-
 vu.sop.load = async function(basePath) {
-    vu.sop.basePath = basePath;
     try {
         if (vu.sop.setHEICFileFormatSupport) {
             vu.sop.HEICFileFormatSupportLibLoad = vu.sop.loadJs(basePath + '/js/libs/heic2any/heic2any.min.js');
         }
 
-        let htmlLoad = vu.sop.loadHtml(basePath + '/html/onboarding.html');
+        let htmlLoad =  vu.sop.loadHtml(basePath + '/html/onboarding.html');
         let webRTCadapter =  vu.sop.loadJs(basePath + '/js/libs/webrtc/adapter-latest.js');
         let msgs =  vu.sop.loadJs(basePath + '/js/vu.sop.msg.'+ vu.sop.lang +'.js');
         let errors =  vu.sop.loadJs(basePath + '/js/vu.error.js');
-        let documentCodes =  vu.sop.loadJs(basePath + '/js/vu.sop.documentCodes.js');
 
         let tfJsLoad =  vu.sop.loadJs(basePath + '/js/libs/tensorflowjs/3.11.0/tf.min.js');
         await tfJsLoad;
@@ -80,9 +57,6 @@ vu.sop.load = async function(basePath) {
         // Fill HTML Load
         document.getElementById('vu.sop').innerHTML = await htmlLoad;
         /*****************************************************************/
-        if ( vu.sop.readBarcodeClientSide ) {
-            var barcode =  vu.sop.loadJs(basePath + '/js/vu.sop.barcode.js');
-        }
 
         if ( vu.sop.useGestures ) {
             vu.face.nncPath = basePath + '/js/libs/face/';
@@ -124,13 +98,12 @@ vu.sop.load = async function(basePath) {
         let documentLoad =  vu.sop.loadJs(basePath + '/js/vu.sop.document.objectDetection.js');
         let apiLoad =  vu.sop.loadJs(basePath + '/js/vu.sop.api.js');
         let sopUILoad =  vu.sop.loadJs(basePath + '/js/vu.sop.ui.js');
-        //let documentFaceLoad =  vu.sop.loadJs(basePath + '/js/vu.sop.document.face.js');
+        let documentFaceLoad =  vu.sop.loadJs(basePath + '/js/vu.sop.document.face.js');
         let documentUiLoad =  vu.sop.loadJs(basePath + '/js/vu.sop.document.ui.js');
         let imageLib =  vu.sop.loadJs(basePath + '/js/vu.image.js');
         let screenCapture =  vu.sop.loadJs(basePath + '/js/vu.screen.capture.js');
         let h264 =  vu.sop.loadJs(basePath + '/js/libs/h264-mp4-encoder/h264-mp4-encoder.web.js');
         let htm2canvas =  vu.sop.loadJs(basePath + '/js/libs/html2canvas/html2canvas.min.js');
-        let uaparser = vu.sop.loadJs(basePath + '/js/libs/ua-parser-js/ua-parser.js');
 
         if (vu.sop.useGestures == true) {
             console.log('Loading challenge gestures')
@@ -153,12 +126,6 @@ vu.sop.load = async function(basePath) {
         //let faceUiGesturesLoad =  vu.sop.loadJs(basePath + '/js/vu.face.ui.gestures.js');
         let faceAuth =  vu.sop.loadJs(basePath + '/js/vu.face.auth.js');
 
-        if(vu.sop.enableTelemetry){
-            console.log('Loading telemetry')
-             logApi = vu.sop.loadJs(basePath + '/js/vu.sop.logApi.js');
-             telemetry = vu.sop.loadJs(basePath + '/js/vu.telemetry.js');
-        }
-
         await webRTCadapter;
         await cameraLoad;
         await blurDetectionLoad;
@@ -166,7 +133,7 @@ vu.sop.load = async function(basePath) {
         await apiLoad;
         await sopUILoad;
         await documentLoad;
-        //await documentFaceLoad;
+        await documentFaceLoad;
         await documentUiLoad;
         await faceAuth;
         await audioLoad;
@@ -175,8 +142,6 @@ vu.sop.load = async function(basePath) {
         await screenCapture;
         await h264;
         await htm2canvas;
-        await uaparser;
-        await documentCodes;
 
         if (vu.sop.useGestures == true) {
             await faceUiGesturesLoad;
@@ -197,18 +162,9 @@ vu.sop.load = async function(basePath) {
             await audioLangLoad;
         }
 
-        if ( vu.sop.readBarcodeClientSide ) {
-            await barcode;
-            vu.sop.barcode.loadPromise = vu.sop.barcode.load(basePath);
-        }
-
-        if(vu.sop.enableTelemetry){
-            await logApi;
-            await telemetry;
-        }
 
         vu.sop.document.objectDetection.modelURL = basePath + '/js/models/document/model.json';
-        //vu.sop.document.face.cascadeUrl = basePath + '/js/libs/pico/facefinder.txt';
+        vu.sop.document.face.cascadeUrl = basePath + '/js/libs/pico/facefinder.txt';
 
         document.getElementById('vu.sop.ui.userName').placeholder = vu.sop.msg.userInputPlaceholder
         document.getElementById('vu.sop.ui.userNameSendBtn').innerHTML = vu.sop.msg.userSendBtn
@@ -547,9 +503,6 @@ vu.sop.startRecording = async function() {
             } catch (e) {
                 console.log("video record error:", e)
                 await vu.sop.ui.hideWhiteLoading()
-                if(vu.sop.enableTelemetry){
-                    await vu.telemetry.addEvent("SelfieActivityProcess", "end", {"captureResponseNumber": vu.telemetry.captureResponseCode.SELFIE.SCREEN_RECORDING_ERROR});
-                }
                 await vu.error.showError(new vu.error.UserError('startRecordingFail'));
                 throw e;
             }
@@ -579,32 +532,26 @@ vu.sop.stopRecording = async function() {
                 console.log("No Screen record active")
             }
         }
-        try{
-            if(vu.sop.recordProcess === true) {
-                if(vu.sop.screenRecorder.recorder !== undefined) {
-                    if(vu.sop.screenRecorder.recorder.state != "inactive") {
-                        vu.sop.screenRecorder.recorder.stop();
-                        vu.sop.screenRecorder.stream.getVideoTracks()[0].stop();
-                        if( vu.sop.screenRecorder.sendVideo === true) {
-                            while(vu.sop.screenRecorder.videoReady === false) {
-                                await vu.sop.ui.sleep('100');
-                            }
-                            console.log(vu.sop.screenRecorder.completeBlob);
-                            return await vu.sop.steps.addVideoResolve(vu.sop.screenRecorder.completeBlob);
-                        } else {
-                            while(vu.sop.screenRecorder.videoReady === false) {
-                                await vu.sop.ui.sleep('100');
-                            }
-                            return vu.sop.screenRecorder.completeBlob;
+        if(vu.sop.recordProcess === true) {
+            if(vu.sop.screenRecorder.recorder !== undefined) {
+                if(vu.sop.screenRecorder.recorder.state != "inactive") {
+                    vu.sop.screenRecorder.recorder.stop();
+                    vu.sop.screenRecorder.stream.getVideoTracks()[0].stop();
+                    if( vu.sop.screenRecorder.sendVideo === true) {
+                        while(vu.sop.screenRecorder.videoReady === false) {
+                            await vu.sop.ui.sleep('100');
                         }
+                        console.log(vu.sop.screenRecorder.completeBlob);
+                        return await vu.sop.steps.addVideoResolve(vu.sop.screenRecorder.completeBlob);
+                    } else {
+                        while(vu.sop.screenRecorder.videoReady === false) {
+                            await vu.sop.ui.sleep('100');
+                        }
+                        return vu.sop.screenRecorder.completeBlob;
                     }
                 }
             }
-        }catch (e) {
-            vu.sop.screenRecorder.sendVideo = false;
-            await vu.sop.stopRecording();
-            return new Error(e.message)
-        };
+        }
     }
 }
 
@@ -614,31 +561,6 @@ vu.sop.stopRecording = async function() {
 vu.sop.start = async function() {
     // Prepara la camara y librerias para userInput() document()
     await vu.sop.steps.loadLibsAndCamera();
-    vu.sop.browserInfo = getBrowserInfo();
-    console.log(vu.sop.browserInfo);
-
-    // Implementacion del Warning cuando la camara no tiene control de foco
-    if (vu.sop.ui.isMobile()) {
-        // Es un Celular
-        if (vu.sop.checktCameraFocusCapabilitiesInMobile) {
-            // Hay que mostrar el warning si la camara no tiene control de foco
-            if (vu.camera.hasFocusControl() === false){
-                // La camara NO tiene control de foco
-                vu.sop.ui.alert(vu.sop.msg.cameraWithoutFocusControl)
-            }
-        }
-    } else {
-        // Es una PC
-        if (vu.sop.checkCameraFocusCapabilitiesInPC) {
-            // Hay que mostrar el warning si la camara no tiene control de foco
-            if (vu.camera.hasFocusControl() === false){
-                // La camara NO tiene control de foco
-                vu.sop.ui.alert(vu.sop.msg.cameraWithoutFocusControl)
-            }
-        }
-    }
-
-    // Iniciamos el proceso del usuario
     if (vu.sop.userNameValue == null) {
         // Pantalla de ingreso de usuario
         await vu.sop.steps.userInput();
@@ -650,12 +572,6 @@ vu.sop.start = async function() {
     try {
         // Pantallas para subir los documentos
         await vu.sop.steps.document();
-
-
-        if(vu.sop.enableTelemetry){
-            await vu.telemetry.addEvent("SelfieActivityProcess" , "start" , {});
-        }
-
         // Prepara la camara y librerias para authFace()
 
         await vu.sop.steps.loadLibsAndCameraFace();
@@ -707,13 +623,6 @@ vu.sop.steps.uploadFrontDocumentPicture = async function() {
 };
 
 vu.sop.steps.uploadFrontDocumentPictureResolve = async function(file) {
-
-    if(vu.sop.enableTelemetry){
-        await vu.telemetry.addEvent("DocumentActivityProcess", "start",
-            { "screenId": 1 }
-        );
-    }
-
     while (true) {
         try {
             console.log(file);
@@ -731,13 +640,6 @@ vu.sop.steps.uploadFrontDocumentPictureResolve = async function(file) {
             if (response.code != 909) {
                 if (response.code === 910 || response.code === 9091 || response.code === 9097) {
                     throw new Error('addFrontApiErrorAntiSpoofing')
-                } else if (response.code === 9097) {
-                    // No se detecto el rostro en el doc
-                    if(vu.sop.enableTelemetry){
-                        await vu.telemetry.addEvent("DocumentActivityProcess", "end",
-                            {"captureResponseNumber": vu.telemetry.captureResponseCode.FRONT.DOCUMENT_FACE_NOT_FOUND});
-                    }
-                    throw new Error('documentPictureNotDetected')
                 } else if (response.code === 911) {
                     throw new Error('addFrontApiErrorFrontAlreadyExist')
                 } else {
@@ -757,13 +659,6 @@ vu.sop.steps.uploadFrontDocumentPictureResolve = async function(file) {
                 if (response.addDocumentPictureRequired) {
                     console.log("addDocumentPicture is Required")
                     if (!response.documentPictureDetected) {
-                        if(vu.sop.enableTelemetry){
-                            await vu.telemetry.addEvent("DocumentActivityProcess", "end",
-                                {"captureResponseNumber": vu.telemetry.captureResponseCode.FRONT.DOCUMENT_FACE_NOT_FOUND});
-                        }
-                        throw new Error('documentPictureNotDetected')
-                        // addDocumentImage esta deshabilitada
-                        /*
                         face = await vu.sop.document.face.do(vu.sop.ui.addFrontImg)
                         if ( face !== null) {
                             response = await vu.sop.api.addDocumentImage(vu.sop.userNameValue,
@@ -777,7 +672,6 @@ vu.sop.steps.uploadFrontDocumentPictureResolve = async function(file) {
                         } else {
                             throw new Error('documentPictureNotDetected')
                         }
-                        */
                     }
                 }
             }
@@ -793,16 +687,8 @@ vu.sop.steps.uploadFrontDocumentPictureResolve = async function(file) {
             }
             await vu.sop.ui.hideWhiteLoading();
             if (vu.sop.addBackRequired) {
-                if(vu.sop.enableTelemetry){
-                    await vu.telemetry.addEvent("DocumentActivityProcess", "end",
-                        {"captureResponseNumber": vu.telemetry.captureResponseCode.FRONT.FRONT_SUCCESS});
-                }
                 await vu.sop.steps.uploadBackDocumentPicture();
             } else {
-                if(vu.sop.enableTelemetry){
-                    await vu.telemetry.addEvent("DocumentActivityProcess", "end",
-                        {"captureResponseNumber": vu.telemetry.captureResponseCode.FRONT.FRONT_SUCCESS});
-                }
                 vu.sop.steps.documentPromiseResolve(true);
                 await vu.sop.ui.hideWhiteLoading()
                 vu.sop.ui.hide("vu.sop.ui.documentFileUploadFront");
@@ -834,12 +720,6 @@ vu.sop.steps.uploadBackDocumentPicture = async function() {
 
 
 vu.sop.steps.uploadBackDocumentPictureResolve = async function(file) {
-
-    if(vu.sop.enableTelemetry){
-        await vu.telemetry.addEvent("DocumentActivityProcess", "start",
-            { "screenId": 2 }
-        );
-    }
     while (true) {
         try {
             // Show faceLoad
@@ -877,10 +757,6 @@ vu.sop.steps.uploadBackDocumentPictureResolve = async function(file) {
                         if (response.containsBarcode) {
                             console.log("barcode is Required")
                             if (!response.barcodeDetected) {
-                                if(vu.sop.enableTelemetry){
-                                    await vu.telemetry.addEvent("DocumentActivityProcess", "end",
-                                        {"captureResponseNumber": vu.telemetry.captureResponseCode.BACK.BARCODE_NOT_FOUND});
-                                }
                                 throw new Error('documentBarcodeNotDetected')
                             }
                         }
@@ -889,10 +765,6 @@ vu.sop.steps.uploadBackDocumentPictureResolve = async function(file) {
             }
             console.log(response)
             vu.sop.steps.documentPromiseResolve(true);
-            if(vu.sop.enableTelemetry){
-                await vu.telemetry.addEvent("DocumentActivityProcess", "end",
-                    {"captureResponseNumber": vu.telemetry.captureResponseCode.BACK.BACK_SUCCESS});
-            }
             await vu.sop.ui.hideWhiteLoading()
             vu.sop.ui.hide("vu.sop.ui.documentFileUploadBack");
             vu.sop.ui.hideBottomText();
@@ -914,16 +786,18 @@ vu.sop.steps.uploadBackDocumentPictureResolve = async function(file) {
 vu.sop.docObjectModelLoad = false;
 vu.sop.docHaarLoad = false;
 vu.sop.steps.loadLibsAndCamera = async function() {
+
+
     if ( vu.sop.warmUpDocModelAsync ) {
         // Load network
         vu.sop.docObjectModelLoad = vu.sop.document.objectDetection.loadModel();
         // Load HAAR
-        //vu.sop.docHaarLoad  = vu.sop.document.face.preLoad()
+        vu.sop.docHaarLoad  = vu.sop.document.face.preLoad()
     } else {
         // Load network
         objectDetectionLoadPromise = await vu.sop.document.objectDetection.loadModel();
         // Load HAAR
-        //haarLoadPromise = await vu.sop.document.face.preLoad()
+        haarLoadPromise = await vu.sop.document.face.preLoad()
     }
 
     while (true) {
@@ -1013,8 +887,8 @@ vu.sop.steps.userInput = async function() {
 };
 
 vu.sop.steps.addVideoResolve = async function(video) {
-        //await vu.sop.ui.showWhiteLoading();
-        response = await vu.sop.api.addVideos(vu.sop.userNameValue,
+        await vu.sop.ui.showWhiteLoading();
+        response = await vu.sop.api.addVideo(vu.sop.userNameValue,
             vu.sop.operationIdValue,
             vu.sop.operationGuidValue,
             video);
@@ -1031,13 +905,6 @@ vu.sop.steps.takePictureDocumentFront = async function() {
     // Document Front - SOP addFront
     //
     await vu.sop.ui.showLoading()
-
-    if(vu.sop.enableTelemetry){
-        await vu.telemetry.addEvent("DocumentActivityProcess", "start",
-            { "screenId": 1 }
-        );
-    }
-
 
     if ( vu.sop.warmUpDocModelAsync ) {
         await vu.sop.docObjectModelLoad;
@@ -1072,13 +939,6 @@ vu.sop.steps.takePictureDocumentFront = async function() {
             if (response.code != 909) {
                 if (response.code === 910 || response.code === 9091 || response.code === 9112) {
                     throw new Error('addFrontApiErrorAntiSpoofing')
-                } else if (response.code === 9097) {
-                    // No se detecto el rostro en el doc
-                    if(vu.sop.enableTelemetry){
-                        await vu.telemetry.addEvent("DocumentActivityProcess", "end",
-                            {"captureResponseNumber": vu.telemetry.captureResponseCode.FRONT.DOCUMENT_FACE_NOT_FOUND});
-                    }
-                    throw new Error('documentPictureNotDetected')
                 } else if (response.code === 911) {
                     throw new Error('addFrontApiErrorFrontAlreadyExist')
                 } else {
@@ -1087,10 +947,6 @@ vu.sop.steps.takePictureDocumentFront = async function() {
             }
             console.log(response)
 
-            if ("detectedCountryId" in response) {
-                vu.sop.documentId = response.detectedCountryId;
-            }
-
             vu.sop.ui.addFrontResponse = response
             if ("addBackRequired" in response) {
                 if (response.addBackRequired) {
@@ -1098,18 +954,10 @@ vu.sop.steps.takePictureDocumentFront = async function() {
                     vu.sop.addBackRequired = response.addBackRequired;
                 }
             }
-            // Face in document-----------------------------------------------------------------------------------------
             if ("addDocumentPictureRequired" in response) {
                 if (response.addDocumentPictureRequired) {
                     console.log("addDocumentPicture is Required")
                     if (!response.documentPictureDetected) {
-                        if(vu.sop.enableTelemetry){
-                            await vu.telemetry.addEvent("DocumentActivityProcess", "end",
-                                {"captureResponseNumber": vu.telemetry.captureResponseCode.FRONT.DOCUMENT_FACE_NOT_FOUND});
-                        }
-                        throw new Error('documentPictureNotDetected')
-                        // addDocumentImage esta deshabilitada
-                        /*
                         face = await vu.sop.document.face.do(vu.sop.ui.addFrontImg)
                         if ( face !== null) {
                             response = await vu.sop.api.addDocumentImage(vu.sop.userNameValue,
@@ -1123,56 +971,27 @@ vu.sop.steps.takePictureDocumentFront = async function() {
                         } else {
                             throw new Error('documentPictureNotDetected')
                         }
-                         */
                     }
                 }
             }
-            // Barcode ------------------------------------------------------------------------------------------------
-            if ("containsBarcode" in response && "barcodeDetected" in response) {
-                if (response.barcodeDetected === false && response.containsBarcode === true) {
-                    console.log("barcode is Required")
-                    if(!response.barcodeDetected) {
-                        if ( vu.sop.barcodeOptional === false ) {
-                            VUId = vu.sop.documentCodes.getVUIdFromId(vu.sop.documentId);
-                            if (vu.sop.readBarcodeClientSide === true &&
-                                Object.keys(vu.sop.barcode.expectedBarcodes).includes(VUId)) {
-                                // Nos aseguramos que la libreria esta cargada
-                                await vu.sop.barcode.loadPromise;
-                                await vu.sop.ui.hideLoading()
-                                barcodeData = await vu.sop.barcode.ui.start();
-                                console.log(barcodeData)
-                                await vu.sop.ui.showLoading();
-                                barcodeResponse = await vu.sop.api.addBarcode(
-                                    vu.sop.userNameValue,
-                                    vu.sop.operationIdValue,
-                                    vu.sop.operationGuidValue,
-                                    barcodeData[0],
-                                    barcodeData[1]
-                                );
-                                await vu.sop.ui.hideLoading()
-                                if (barcodeResponse.code != 920) {
-                                    throw new Error('deviceNotSupported')
-                                }
-                            } else {
-                                throw new Error('documentBarcodeNotDetected')
-                            }
+            if ( vu.sop.barcodeOptional === false ) {
+                if ("containsBarcode" in response) {
+                    if (response.containsBarcode){
+                        console.log("barcode is Required")
+                        if(!response.barcodeDetected) {
+                            throw new Error('documentBarcodeNotDetected')
                         }
                     }
                 }
             }
-            // Barcode ------------------------------------------------------------------------------------------------
             await vu.sop.ui.hideLoading()
             break
         } catch (e) {
             await vu.sop.ui.hideLoading()
             console.log('vu.sop.ui.addFront', e);
             await vu.error.showError(new vu.error.TakeDocumentFrontError(e.message));
-        }
-    }
 
-    if(vu.sop.enableTelemetry){
-        await vu.telemetry.addEvent("DocumentActivityProcess", "end",
-             {"captureResponseNumber": vu.telemetry.captureResponseCode.FRONT.FRONT_SUCCESS});
+        }
     }
     return true;
 };
@@ -1182,11 +1001,6 @@ vu.sop.steps.takePictureDocumentBack = async function() {
     // Document Back - SOP addBack
     //
     if (vu.sop.addBackRequired) {
-        if(vu.sop.enableTelemetry){
-            await vu.telemetry.addEvent("DocumentActivityProcess", "start",
-                { "screenId": 2 }
-            );
-        }
         while (true) {
             try {
                 backDocumentImg = await vu.sop.document.ui.start('back');
@@ -1217,44 +1031,16 @@ vu.sop.steps.takePictureDocumentBack = async function() {
                         }
                     }
                 }
-                // Barcode --------------------------------------------------------------------------------------------
-                if ("containsBarcode" in response && "barcodeDetected" in response) {
-                    if (response.barcodeDetected === false && response.containsBarcode === true) {
-                        console.log("barcode is Required")
-                        if(!response.barcodeDetected) {
-                            if ( vu.sop.barcodeOptional === false ) {
-                                VUId = vu.sop.documentCodes.getVUIdFromId(vu.sop.documentId);
-                                if (vu.sop.readBarcodeClientSide === true &&
-                                   Object.keys(vu.sop.barcode.expectedBarcodes).includes(VUId)) {
-                                    // Nos aseguramos que la libreria esta cargada
-                                    await vu.sop.barcode.loadPromise;
-                                    await vu.sop.ui.hideLoading()
-                                    barcodeData = await vu.sop.barcode.ui.start();
-                                    console.log(barcodeData)
-                                    await vu.sop.ui.showLoading()
-                                    barcodeResponse = await vu.sop.api.addBarcode(
-                                        vu.sop.userNameValue,
-                                        vu.sop.operationIdValue,
-                                        vu.sop.operationGuidValue,
-                                        barcodeData[0],
-                                        barcodeData[1]
-                                    );
-                                    await vu.sop.ui.hideLoading()
-                                    if (barcodeResponse.code != 920) {
-                                        throw new Error('deviceNotSupported')
-                                    }
-                                } else if(VUId !== 'VU-COL-ID-02' ){
-                                    if(vu.sop.enableTelemetry){
-                                        await vu.telemetry.addEvent("DocumentActivityProcess", "end",
-                                            {"captureResponseNumber": vu.telemetry.captureResponseCode.BACK.BARCODE_NOT_FOUND});
-                                    }
-                                    throw new Error('documentBarcodeNotDetected')
-                                }
+                if ( vu.sop.barcodeOptional === false ) {
+                    if ("containsBarcode" in response) {
+                        if (response.containsBarcode) {
+                            console.log("barcode is Required")
+                            if(!response.barcodeDetected) {
+                                throw new Error('documentBarcodeNotDetected')
                             }
                         }
                     }
                 }
-                // Barcode --------------------------------------------------------------------------------------------
                 console.log(response)
                 await vu.sop.ui.hideLoading()
                 break
@@ -1265,17 +1051,12 @@ vu.sop.steps.takePictureDocumentBack = async function() {
             }
         }
     }
-
-    if(vu.sop.enableTelemetry){
-        await vu.telemetry.addEvent("DocumentActivityProcess", "end",
-            {"captureResponseNumber": vu.telemetry.captureResponseCode.BACK.BACK_SUCCESS});
-    }
-
     return true;
 };
 
 vu.sop.faceModelLoad = false;
 vu.sop.steps.loadLibsAndCameraFace = async function() {
+
    while (true) {
         if (vu.sop.disableBiometric) { break }
         try {
@@ -1323,15 +1104,13 @@ vu.sop.steps.loadLibsAndCameraFace = async function() {
                 }
             }
 
+
+
             vu.sop.ui.flipVideoHorizontal(vu.camera.video)
             if (vu.sop.preCacheFaceModelAsync) {
                 await vu.sop.preCacheFaceModelPromise;
             }
-            await vu.face.load(vu.camera.video, vu.sop.basePath);
-
-            //
-
-
+            await vu.face.load(vu.camera.video);
             break
         } catch (e) {
             await vu.sop.ui.hideLoading()
@@ -1350,7 +1129,7 @@ vu.sop.steps.authFace = async function() {
         try {
             await vu.sop.ui.hideLoading();
             if (vu.sop.useGestures) {
-                await vu.face.ui.gestures.start(vu.sop.basePath);
+                await vu.face.ui.gestures.start();
                 pictures = await vu.face.ui.gestures.challengeStart();
             } else {
                 await vu.face.ui.start();
@@ -1432,17 +1211,14 @@ vu.sop.steps.authFace = async function() {
             }
 
             await vu.sop.ui.hideLoading()
-            if(vu.sop.enableTelemetry){
-                await vu.telemetry.addEvent("SelfieActivityProcess", "end", {"captureResponseNumber": vu.telemetry.captureResponseCode.SELFIE.SELFIE_SUCCESS}
-                );
-            }
             break
         } catch (e) {
             vu.sop.screenRecorder.sendVideo = false;
+            await vu.sop.stopRecording()
             await vu.sop.ui.hideLoading()
-            await vu.sop.ui.hideWhiteLoading()
-            await vu.error.showError(new vu.error.CameraFaceError('endOpApiError'));
-            throw e;
+            console.log(e)
+            await vu.error.showError(new vu.error.FaceAuthError(e.message));
+            return new Error(e.message)
         }
     }
     // TODO - Testiar y mejorar
@@ -1469,7 +1245,7 @@ vu.sop.steps.captureSelfie = async function() {
         await vu.sop.ui.showVideo();
         
         if (vu.sop.useGestures) {
-            await vu.face.ui.gestures.start(vu.sop.basePath);
+            await vu.face.ui.gestures.start();
             pictures = await vu.face.ui.gestures.challengeStart();
         } else {
             await vu.face.ui.start();
@@ -1511,21 +1287,4 @@ vu.sop.createLoadingImg = async function() {
     //Agrega la imagen al html
     document.getElementById("vu.sop.ui.whiteLoadingImg").appendChild(imgElem);
     document.getElementById("vu.sop.ui.loadingImg").appendChild(imgElem.cloneNode());
-}
-
-function getBrowserInfo() {
-    var parser = new UAParser();
-    var result = parser.getResult();
-    return {
-		browserName: result.browser.name || "Unknown Browser",
-		browserVersion: result.browser.version || "Unknown",
-		browserEngineName: result.engine.name || "Unknown Engine Name",
-		browserEngineVersion: result.engine.version || "Unknown Engine Version",
-		mobilePlatform: result.device.type || "Not a Mobile Device",
-		mobileModel: result.device.model || "Unknown Model",
-		screenWidth: window.screen.width,
-		screenHeight: window.screen.height,
-		operatingSystem: result.os.name || "Unknown OS",
-		operatingSystemVersion: result.os.version || "Unknown"
-    };
 }

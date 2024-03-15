@@ -88,8 +88,3 @@ vu.sop.msg.endOpApiDocumentBackFrontError = "La información entre el frente y d
 vu.sop.msg.endOpApiDocumentBarcodeDoNotExist = "No se pudo leer el código de barras, por favor, reintente";
 vu.sop.msg.endOpApiDocumentExpired = "Documento expirado, por favor, reintente";
 vu.sop.msg.endOpApiPersonDataFail = "No se pudo analizar la información de la persona, por favor, reintente";
-
-vu.sop.msg.readBarcode = "Ubique el código de barreas en el área central";
-vu.sop.msg.cantReadBarcode = "Si no lo puede leer, pruebe con otro dispositivo";
-vu.sop.msg.readBarcodeTutorial = "En la proxima patalla se le pedira que lea el codigo de barras de su documento";
-vu.sop.msg.cameraWithoutFocusControl = "La cámara de este dispositivo no permite el control del foco. Recomendamos intentar con un dispositivo distinto.";

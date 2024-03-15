@@ -84,11 +84,7 @@ vu.error.showError = async function(e) {
         }
     } else if(e.name === vu.error.USER_ERROR) {
         vu.sop.audio.play('vu.sop.audio.userError');
-        if (vu.sop.ui.isMobile()){
-            await vu.sop.ui.alertAndRefresh(vu.sop.msg.userError);
-        }else{
-            await vu.sop.ui.alert(vu.sop.msg.userError)
-        }
+        await vu.sop.ui.alert(vu.sop.msg.userError);
     } else if(e.name === vu.error.TAKE_DOCUMENT_FRONT_ERROR) {
         if (e.message === 'addFrontApiError') {
             vu.sop.audio.play('vu.sop.audio.addFrontDocumentComunicationError');

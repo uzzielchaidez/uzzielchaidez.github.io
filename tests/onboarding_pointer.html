@@ -4,7 +4,7 @@
 <head>
 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8"/>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -29,24 +29,45 @@
         </div>
     </div>
     <script src="../js/vu.sop.js"></script>
+	<script src="../js/vu.sop.audioEsPreLoad.js" type="text/javascript"></script>
 
     <script>
-    vu.sop.load('../').then(
-        function() {
-            vu.sop.api.headers = {
-              'authorization': 'd74ac1ee-bd14-4b41-8a67-674849fbc3b5'
-            };            
-            vu.sop.api.host = 'https://vusecurity.com/onboarding-rest';
+		
+		
+		vu.sop.load('..').then(
+			function() {
+				
+				vu.sop.api.headers = {
+				  'x-access-apikey': 'd74ac1ee-bd14-4b41-8a67-674849fbc3b5'
+				};            
+				
+				vu.sop.api.host = "https://om-presales2.vusecurity.solutions/vu-onboarding-rest/";
 
-            vu.sop.start().then(
-                function(res) {
-                    console.log(res)
-                }
-            )
-        },function(value) {
-            console.log('re',value)
-        }
-    )
+				//Customizations Area
+				vu.sop.msg.userInputPlaceholder = "Usuario";
+				vu.sop.warmUpDocModelAsync = true;
+				vu.sop.audio.enabled = true;
+
+				vu.sop.start().then(
+					function(res) {
+					  // Promise OK!
+						  console.log(res)
+							  if (res instanceof Error) {
+										window.location.href = "../../omdemo/index.html";
+										//window.location.reload(false);
+							  } else {
+										vu.sop.ui.alert("Registro Exitoso<br>").then(function (res) {
+										window.location.href = "../../omdemo/index.html";
+										//window.location.reload(false);
+										})
+							  }
+					}
+				)
+			},function(value) {
+				console.log('re',value)
+			}
+
+		)
 
 
     </script>
@@ -55,3 +76,4 @@
 </body>
 
 </html>
+

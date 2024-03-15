@@ -29,23 +29,50 @@
         </div>
     </div>
     <script src="../js/vu.sop.js"></script>
-
+	<script src="../js/vu.sop.audioEsPreLoad.js" type="text/javascript"></script>
+    <!-- <script src="onboarding/js/vu.sop.js"></script>
+    Confirmar a cual es mejor llamar  -->
     <script>
-    vu.sop.load('../').then(
+    vu.sop.useGestures = true;
+    vu.sop.audio.enabled = true;
+    //vu.sop.preCacheFaceModelAsync = true;
+    //vu.sop.faceOrientationModelWeights = 'VERYLIGHT';  // VERYLIGHT LIGHT NORMAL BEST
+    
+    // Confirmar si por temas de tiempo es mejor llamar a toda la carpeta o solo a ese archivo
+    //vu.sop.load('/service/static/onboarding/').then(
+    vu.sop.load('..').then(
         function() {
             vu.sop.api.headers = {
-              'authorization': 'd74ac1ee-bd14-4b41-8a67-674849fbc3b5'
-            };            
-            vu.sop.api.host = 'https://vusecurity.com/onboarding-rest';
+              'x-access-apikey': 'd74ac1ee-bd14-4b41-8a67-674849fbc3b5'
+            };
+            vu.sop.api.host = "https://om-presales2.vusecurity.solutions/vu-onboarding-rest";
 
-            vu.sop.start().then(
+            //vu.sop.api.host = window.location.protocol + '//' + window.location.host + "/vu-onboarding-rest";
+            
+            //vu.sop.warmUpDocModelAsync = true;
+            //vu.sop.disableBiometric = true;
+            //vu.sop.useGestures = false
+            //vu.sop.flipDocumentCamera = false
+
+ vu.sop.start().then(
                 function(res) {
-                    console.log(res)
+                  // Promise OK!
+                  console.log(res)
+                  if (res instanceof Error) {
+                            window.location.href = "../../omdemo/index.html";
+							//window.location.reload(false);
+                  } else {
+                    vu.sop.ui.alert("Registro Exitoso<br>").then(function (res) {
+                            window.location.href = "../../omdemo/index.html";
+							//window.location.reload(false);
+                    })
+                  }
                 }
             )
         },function(value) {
-            console.log('re',value)
+	console.log('re',value)
         }
+
     )
 
 
@@ -55,3 +82,4 @@
 </body>
 
 </html>
+

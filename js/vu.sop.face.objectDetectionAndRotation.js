@@ -8,7 +8,7 @@ if (typeof vu.sop.face.objectDetectionAndRotation == "undefined") { vu.sop.face.
 
 vu.sop.face.objectDetectionAndRotation.minConfidence = 0.6
 vu.sop.face.objectDetectionAndRotation.maxNumBoxes = 1
-vu.sop.face.objectDetectionAndRotation.modelURL = ''
+vu.sop.face.objectDetectionAndRotation.modelURL = 'onboarding/js/models/face-location-and-rotation/model.json'
 vu.sop.face.objectDetectionAndRotation.labels = ['rot0','rot90','rot180','rot270'];
 
 //------------------------------------------------------
@@ -65,11 +65,7 @@ vu.sop.face.objectDetectionAndRotation.buildDetectedObjects = async function(wid
 }
 
 
-vu.sop.face.objectDetectionAndRotation.loadModel = async function(basePath) {
-    console.log(basePath)
-    vu.sop.face.objectDetectionAndRotation.modelURL = basePath + '/js/models/face-location-and-rotation/model.json';
-    console.log(vu.sop.face.objectDetectionAndRotation.modelURL);
-
+vu.sop.face.objectDetectionAndRotation.loadModel = async function() {
     tf.ENV.set('DEBUG', false);
     tf.enableProdMode();
 
