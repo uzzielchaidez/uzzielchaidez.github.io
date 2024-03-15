@@ -13,7 +13,7 @@ if (typeof vu.sop.api == "undefined") { vu.sop.api = function() {} }
 
 vu.sop.api.host = 'https://om-presales2.vusecurity.solutions/vu-onboarding-rest'
 vu.sop.api.headers = {
-    'authorization': '93c2cca7-8e89-4dff-aef4-f3bcb6930ba9'
+    'authorization': 'd74ac1ee-bd14-4b41-8a67-674849fbc3b5'
   };
 
 vu.sop.api.imgData2b64 = function(img){
