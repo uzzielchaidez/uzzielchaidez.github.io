@@ -10,8 +10,8 @@ if (typeof vu.sop == "undefined") { vu.sop = function() {} }
 
 if (typeof vu.sop.api == "undefined") { vu.sop.api = function() {} }
 
-vu.sop.api.host = 'https://host:port/vu-onboarding-rest'
-vu.sop.api.headers = undefined;
+vu.sop.api.host = 'https://om-presales2.vusecurity.solutions/vu-onboarding-rest'
+vu.sop.api.headers = 'd74ac1ee-bd14-4b41-8a67-674849fbc3b5';
 
 vu.sop.api.imgData2b64 = function(img){
     return img.split(",")[1]
