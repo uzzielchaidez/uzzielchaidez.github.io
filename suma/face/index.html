@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test SDK</title>
+    <!-- Carga del archivo JavaScript que contiene el componente de autocaptura -->
+    <script type="module" crossorigin src="/assets/face_autocapture.min.js"></script>
+</head>
+
+<body>
+    <!-- Contenedor done se mostrará el componente de autocaptura -->
+    <div>
+        <div id="face_autocapture"></div>
+    </div>
+
+    <!-- Script que escucha el evento "message” -->
+    <script type="module">
+        // Cuando se recibe un mensaje del componente de autocaptura...
+        window.addEventListener("message", function (event) {
+            // Se extraen las propiedades "image" y "error" del mensaje
+            let image = event.data.image;
+            let error = event.data.error;
+
+            // Si se recibió una imagen exitosamente, se almacena en el sessionStorage con el nombre "document"
+
+            // y luego se redirige a la página "result.html"
+
+            if (image) console.log(image);
+
+            // Si se recibió un error, se muestra una alerta con el nombre y mensaje del error
+            if (error) {
+                const getError = { name: error.name, message: error.message };
+                console.log(getError);
+            }
+        });
+    </script>
+</body>
+
+</html>
