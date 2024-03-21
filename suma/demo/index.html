@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Autocapture JS</title>
+    <link rel="stylesheet" type="text/css" href="./assets/css/main.css" />
+    <script type="module" crossorigin src="./assets/js/autocapture_5.2.3.min.js"></script>
+  </head>
+  <body>
+    <div class="content_title">
+      <p><strong id="title">Captura Frontal</strong></p>
+    </div>
+    <div class="capture_documents">
+      <div class="content_preview">
+        <!-- Componente de autocaptura -->
+        <div class="content_autocapture">
+          <div id="autocapture_documents"></div>
+        </div>
+        <div id="content_result">
+          <img id="capture_image" />
+        </div>
+        <div id="loading">
+          <p><strong>Gire el documento hacia el reverso</strong></p>
+          <img src="./assets/images/rotate.svg" title="Created by Andrew Kelly" />
+        </div>
+      </div>
+      <div class="content_progress">
+        <div class="progress" id="front"><h4>Frente</h4></div>
+        <div class="progress" id="back"><h4>Reverso</h4></div>
+      </div>
+    </div>
+    <div class="content_buttons" id="content_buttons">
+      <button type="button" id="continue">Continuar</button>
+    </div>
+    <footer>
+      <h3>Prueba de autocaptura de documentos</h3>
+      <p>Suma Mexico 2024 | VDID SDK V5.2.3</p>
+    </footer>
+
+    <!-- Script que escucha el evento "message" -->
+    <script type="module">
+      let saveImages = [];
+      const title = document.getElementById("title");
+      const stepBack = document.getElementById("back");
+      const stepFront = document.getElementById("front");
+      const loading = document.getElementById("loading");
+      const contentResult = document.getElementById("content_result");
+      const contentButtons = document.getElementById("content_buttons");
+
+      // Cuando se recibe un mensaje del componente de autocaptura...
+      window.addEventListener("message", function (event) {
+        // Se extraen las propiedades "image" y "error" del mensaje
+        let image = event.data.image;
+        let error = event.data.error;
+
+        if (image) {
+          // Guardar imagenes capturadas en el proceso
+          saveImages.push(image);
+
+          // Si ya se almaceno la primera imagen, que en este caso consideramos que es el frente del documento,
+          // continuamos con la parte trasera de la misma por lo que el título cambia para ayudar al usuario.
+          if (saveImages.length === 1) {
+            title.textContent = "Captura Trasera";
+            loading.style.display = "grid";
+            stepFront.style.color = "var(--accent)";
+          }
+
+          // Si se recibió la cantidad de imagenes indicada, en este caso dos (frente y reverso),
+          // se almacenan en el session storage y luego se redirige a la página "result.html"
+          if (saveImages.length === 2) {
+            stepBack.style.color = "var(--accent)";
+            contentButtons.style.display = "none";
+            loading.style.display = "none";
+            sessionStorage.setItem("documents", JSON.stringify(saveImages));
+
+            setTimeout(() => {
+              const redirect = document.createElement("a");
+              redirect.href = "./result.html";
+              redirect.click();
+            }, 1100);
+          } else {
+            const result = document.getElementById("capture_image");
+            result.src = `data:image/jpeg;base64,${image}`;
+            result.alt = "resultado";
+            contentResult.style.display = "flex";
+            contentButtons.style.display = "block";
+          }
+        }
+
+        // Si se recibió un error, se muestra una alerta con el nombre y mensaje del error
+        if (error) {
+          const getError = { name: error.name, message: error.message };
+          console.log(getError);
+        }
+
+        // La función continueDetection ayuda a pausar el proceso de detección hasta que una acción,
+        // nos ayude a continuar el proceso de autocaptura de documentos, es decir, capturamos el
+        // frente del documento para luego mediante un botón que ejecuta la función onclick
+        // continuar con la captura del reverso del documento.
+        if (window["continueDetection"] && typeof window["continueDetection"] === "function") {
+          const continueBtn = document.getElementById("continue");
+          continueBtn.onclick = function () {
+            loading.style.display = "none";
+            contentResult.style.display = "none";
+            contentButtons.style.display = "none";
+            // Se ejecuta la función continueDetection que se envia a través del componente
+            // permitiendo continuar con la captura del reverso del documento
+            window["continueDetection"]();
+          };
+        }
+      });
+    </script>
+  </body>
+</html>
