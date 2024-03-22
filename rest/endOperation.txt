@@ -1,0 +1,84 @@
+{
+  "operationId": 377,
+  "userName": "test13@banorte.com"
+}
+
+{
+    "code": 903,
+    "message": "End operation success",
+    "operationStatusId": 5,
+    "confidence": 0.81,
+    "confidenceDocument": -1.0,
+    "confidenceTotal": 0.81,
+    "ocr": {
+        "lastNames": "",
+        "gender": "",
+        "birthdate": "19851013",
+        "names": "LOPEZ CHAIDEZ CHRISTIAN UZZIEL",
+        "number": "",
+        "extra": {
+            "additional": "{\"ElectorKey\":\"\",\"IssueYear\":\"\",\"Address\":\"\",\"DETECTED_DOCUMENT_COUNTRY\":\"Mexico\",\"City\":\"\",\"DETECTED_DOCUMENT_COUNTRY_ID\":7,\"Section\":\"\",\"DETECTED_COUNTRY\":\"mexicoine\",\"State\":\"\",\"DETECTED_COUNTRY_ID\":10,\"RegistrationYear\":\"\",\"ExpiryYear\":\"\",\"Location\":\"\"}",
+            "mrz": "{\"ExpiryDate\":\"2025-12-31\",\"CountryIso\":\"MEX\",\"LastNames\":\"LOPEZ CHAIDEZ\",\"MrzType\":\"TD1\",\"Gender\":\"H\",\"DocumentNumber\":\"140576718\",\"Nationality\":\"MEXICO\",\"Names\":\"CHRISTIAN UZZIE\",\"number\":\"\",\"Type\":\"ID\",\"NationalityIso\":\"MEX\",\"FullName\":\"LOPEZ CHAIDEZ CHRISTIAN UZZIE\",\"Country\":\"MEXICO\",\"BirthDate\":\"1985-10-13\"}"
+        }
+    },
+    "ocrRaw": "INSTITUTO-NACIONAL ELECTORAL,MEXICO,CREDENCIAL PARA VOTAR,FECHADENACINENTO,NOMBRE,13101985,LOPEZ,CHAIDEZ,LSEXOTAB,CHRISTIAN UZZIEL,DOMICILIO,CSAN IGNACIO1106,FRACC MITRAS PTE SEC SACRAMENTO 66023,eraaaeareaeeanneearaan,GARCIA,N.L.,CLAVE DEELECTOR LPCHCH85101318H700,ANODE REGISTRO 2006 02,CURP LOCC851013HNTPHH03,MUNICIPIO018SECCION 2592,ESTADO 19,EMISION 2015 VIGENCIA 2025,LOCALDAD 0240,INE,EDMUNDOJACOBO MOLINA,SECRETARIO EJECUTIVODEL,INSTITUTO NACIONALELECTORAL,IDMEX1405767181<<2592074838468,8510138H2512314MEX<02<<05787<9,LOPEZ<CHAIDEZ<<CHRISTIANUZZIE,",
+    "barcode": {
+        "contains": true,
+        "readed": true
+    },
+    "mrz": {
+        "contains": true,
+        "readed": true,
+        "data": {
+            "ExpiryDate": "2025-12-31",
+            "CountryIso": "MEX",
+            "LastNames": "LOPEZ CHAIDEZ",
+            "MrzType": "TD1",
+            "Gender": "H",
+            "DocumentNumber": "140576718",
+            "Nationality": "MEXICO",
+            "Names": "CHRISTIAN UZZIE",
+            "number": "",
+            "Type": "ID",
+            "NationalityIso": "MEX",
+            "FullName": "LOPEZ CHAIDEZ CHRISTIAN UZZIE",
+            "Country": "MEXICO",
+            "BirthDate": "1985-10-13"
+        }
+    },
+    "spoofingResponse": [
+        {
+            "type": "Document",
+            "detail": "Front",
+            "confidence": 0.0,
+            "threshold": 0.0,
+            "status": 2,
+            "result": 1
+        },
+        {
+            "type": "Document",
+            "detail": "Back",
+            "confidence": 0.0,
+            "threshold": 0.0,
+            "status": 2,
+            "result": 1
+        },
+        {
+            "type": "Document",
+            "detail": "Face",
+            "confidence": 0.0,
+            "threshold": 0.0,
+            "status": 2,
+            "result": 1
+        },
+        {
+            "type": "Face",
+            "detail": "SN",
+            "confidence": 0.0,
+            "threshold": 0.4,
+            "status": 2,
+            "result": 1
+        }
+    ],
+    "identical": true
+}
