@@ -12,6 +12,7 @@ vu.sop.disableBiometric = false;
 vu.sop.operationIdValue = null;
 vu.sop.operationGuidValue = null;
 vu.sop.userNameValue = null;
+vu.sop.isOutsystems = null;
 vu.sop.lang = 'es';
 vu.sop.flipDocumentCamera = 'auto';
 vu.sop.barcodeOptional = true;
@@ -559,6 +560,28 @@ vu.sop.stopRecording = async function() {
 
 //------------------------------------------------------------------------------------------------------
 vu.sop.start = async function() {
+
+    const valores = window.location.search
+    const urlParams = new URLSearchParams(valores)
+
+    // Verificar si se viene de Outsystems
+    var isOutsystems = urlParams.get('outsystems')
+    if (isOutsystems !=  null) {
+        if (isOutsystems == 'true') {
+            vu.sop.isOutsystems = isOutsystems
+        }
+    }
+    console.log("Param. outsystems: " + vu.sop.isOutsystems)
+
+    // Obtener el correo electronico de los parametros
+    var emailUserName = urlParams.get('email')
+    if (emailUserName !=  null) {
+        if (emailUserName != '') {
+            vu.sop.userNameValue = emailUserName
+        }
+    }
+    console.log("Param. Username: " + vu.sop.userNameValue)
+
     // Prepara la camara y librerias para userInput() document()
     await vu.sop.steps.loadLibsAndCamera();
     if (vu.sop.userNameValue == null) {
@@ -1187,23 +1210,24 @@ vu.sop.steps.authFace = async function() {
                 }
             }
 
-            response = await vu.sop.api.endOperation(vu.sop.userNameValue,
+            responseEnd = await vu.sop.api.endOperation(vu.sop.userNameValue,
                 vu.sop.operationIdValue, vu.sop.operationGuidValue)
 
-            if (response.code != 903) {
-                if (response.code === 904) {
+            if (responseEnd.code != 903) {
+
+                if (responseEnd.code === 904) {
                     throw new Error('endOpApiBadScore')
-                } else if (response.code === 2001) {
+                } else if (responseEnd.code === 2001) {
                     throw new Error('endOpApiBiometricFail')
-                } else if (response.code === 905) {
+                } else if (responseEnd.code === 905) {
                     throw new Error('endOpApiDocumentDataError')
-                } else if (response.code === 1907) {
+                } else if (responseEnd.code === 1907) {
                     throw new Error('endOpApiDocumentBackFrontError')
-                } else if (response.code === 1910) {
+                } else if (responseEnd.code === 1910) {
                     throw new Error('endOpApiDocumentBarcodeDoNotExist')
-                } else if (response.code === 1911) {
+                } else if (responseEnd.code === 1911) {
                     throw new Error('endOpApiDocumentExpired')
-                } else if (response.code === 1913) {
+                } else if (responseEnd.code === 1913) {
                     throw new Error('endOpApiPersonDataFail')
                 } else {
                     throw new Error('endOpApiError')
@@ -1211,13 +1235,60 @@ vu.sop.steps.authFace = async function() {
             }
 
             await vu.sop.ui.hideLoading()
+
+            console.log("=== REDIRIGE CON EXITO ===")
+            if (vu.sop.isOutsystems) {
+                location.replace("com.outsystemscloud.personal3yw2dxhb.vuonboardingweb://vuonboardingweb/finalok")
+            }
+            else {
+                location.replace("./?result=successful&idoperacion=" + vu.sop.operationIdValue)
+            }
+
             break
         } catch (e) {
+            console.log("IdOperacion = " + vu.sop.operationIdValue)
+            console.log("UserName = " + vu.sop.userNameValue)
+
+            if (e.code === 904) {
+                errorTipo = 'endOpApiBadScore'
+                errorDesc = vu.sop.msg.endOpApiBadScore
+            } else if (e.code === 2001) {
+                errorTipo = 'endOpApiBiometricFail'
+                errorDesc = vu.sop.msg.endOpApiBiometricFail
+            } else if (e.code === 905) {
+                errorTipo = 'endOpApiDocumentDataError'
+                errorDesc = vu.sop.msg.endOpApiDocumentDataError
+            } else if (e.code === 1907) {
+                errorTipo = 'endOpApiDocumentBackFrontError'
+                errorDesc = vu.sop.msg.endOpApiDocumentBackFrontError
+            } else if (e.code === 1910) {
+                errorTipo = 'endOpApiDocumentBarcodeDoNotExist'
+                errorDesc = vu.sop.msg.endOpApiDocumentBarcodeDoNotExist
+            } else if (e.code === 1911) {
+                errorTipo = 'endOpApiDocumentExpired'
+                errorDesc = vu.sop.msg.endOpApiDocumentExpired
+            } else if (e.code === 1913) {
+                errorTipo = 'endOpApiPersonDataFail'
+                errorDesc = vu.sop.msg.endOpApiPersonDataFail
+            } else {
+                errorTipo = 'endOpApiError'
+                errorDesc = vu.sop.msg.endOpApiError
+            }
+    
             vu.sop.screenRecorder.sendVideo = false;
             await vu.sop.stopRecording()
             await vu.sop.ui.hideLoading()
             console.log(e)
-            await vu.error.showError(new vu.error.FaceAuthError(e.message));
+            //await vu.error.showError(new vu.error.FaceAuthError(errorTipo));
+            
+            console.log("=== REDIRIGE CON ERROR ===")
+            if (vu.sop.isOutsystems) {
+                location.replace("com.outsystemscloud.personal3yw2dxhb.vuonboardingweb://vuonboardingweb/finalfail")
+            }
+            else {
+                location.replace("./?result=error&idoperacion=" + vu.sop.operationIdValue + "&errordesc=" + errorDesc)
+            }
+
             return new Error(e.message)
         }
     }
