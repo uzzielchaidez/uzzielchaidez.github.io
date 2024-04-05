@@ -167,7 +167,7 @@ vu.sop.load = async function(basePath) {
         vu.sop.document.objectDetection.modelURL = basePath + '/js/models/document/model.json';
         vu.sop.document.face.cascadeUrl = basePath + '/js/libs/pico/facefinder.txt';
 
-        document.getElementById('vu.sop.ui.userName').placeholder = vu.sop.msg.userInputPlaceholder
+        document.getElementById('vu.sop.ui.userName').placeholder = "Nombre de Usuario" //vu.sop.msg.userInputPlaceholder
         document.getElementById('vu.sop.ui.userNameSendBtn').innerHTML = vu.sop.msg.userSendBtn
 
         vu.sop.ui.bottomTextBackGroundColor("rgba(0, 0, 0, 0.4)");
