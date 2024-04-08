@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal</title>
+    <script>
+        //creamos la variable ventana_secundaria que contendrá una referencia al popup que vamos a abrir
+        //la creamos como variable global para poder acceder a ella desde las distintas funciones
+        var ventana_secundaria
+        
+        function abrirVentana(){
+            //guardo la referencia de la ventana para poder utilizarla luego
+            ventana_secundaria = window.open("cerrar_window2.html","miventana","width=300,height=200,menubar=no")
+        }
+        
+        function cerrarVentana(){
+            //la referencia de la ventana es el objeto window del popup. Lo utilizo para acceder al método close
+            ventana_secundaria.close()
+        }
+    </script>
+</head>
+<body>
+    <h1>
+        Esta es la ventana principal
+    </h1>
+    <form>
+        <input type=button value="Abrir ventana secundaria" onclick="abrirVentana()">
+        <br>
+        <br>
+        <input type=button value="Cerrar ventana secundaria" onclick="cerrarVentana()">
+    </form>
+</body>
+</html>
